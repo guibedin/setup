@@ -28,6 +28,6 @@ ssh-add ~/.ssh/id_rsa
 
 mkdir personal
 git clone git@github.com:guibedin/setup.git personal/setup
+
+ansible-playbook setup.yaml
 ```
-
-
