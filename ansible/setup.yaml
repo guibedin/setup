@@ -2,7 +2,6 @@
   become: yes
   vars:
     - user: 'guilhermeb'
-    - ssh_key: '~/.ssh/id_rsa'
   tasks:
     - name: Install base packages
       ansible.builtin.apt:
@@ -52,8 +51,8 @@
         echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" |  tee /etc/apt/sources.list.d/hashicorp.list
 
         # Kubectl repository
-        #curl -fsSLo /etc/apt/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
-        #echo "deb [signed-by=/etc/apt/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-$(lsb_release -cs) main" |  tee /etc/apt/sources.list.d/kubernetes.list
+        curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.28/deb/Release.key | gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+        echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.28/deb/ /' | tee /etc/apt/sources.list.d/kubernetes.list
 
         apt-get update
     
@@ -66,7 +65,7 @@
           - docker-buildx-plugin 
           - docker-compose-plugin
           - vagrant
-            # - kubectl
+          - kubectl
 
     - name: Setup docker, libvirt and nfs-kernel-server
       ansible.builtin.shell: |
@@ -84,7 +83,6 @@
         key_file: ~/.ssh/id_rsa
 
     - name: Install Go
-      become: false
       ansible.builting.sh: |
         curl "https://go.dev/dl/go1.21.4.src.tar.gz"
         tar -C /usr/local -xzf go1.21.4.linux-amd64.tar.gz
