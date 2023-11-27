@@ -25,6 +25,7 @@
           - ruby-dev
           - virt-manager
           - apt-transport-https
+          - tmux
 
     - name: Change shell to zsh
       ansible.builtin.shell: |
@@ -81,3 +82,11 @@
         repo: git@github.com:guibedin/nvim.git
         dest: ~/.config/nvim
         key_file: ~/.ssh/id_rsa
+
+    - name: Install Go
+      become: false
+      ansible.builting.sh: |
+        curl "https://go.dev/dl/go1.21.4.src.tar.gz"
+        tar -C /usr/local -xzf go1.21.4.linux-amd64.tar.gz
+        rm go1.21.4.linux-amd64.tar.gz
+
