@@ -104,5 +104,6 @@ source $ZSH/oh-my-zsh.sh
 alias k=kubectl
 alias kctx=kubectx
 alias kns=kubens
+alias cht=~/personal/chtsh.sh
 source <(kubectl completion zsh)
 
