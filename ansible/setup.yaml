@@ -88,3 +88,11 @@
         tar -C /usr/local -xzf go1.21.4.linux-amd64.tar.gz
         rm go1.21.4.linux-amd64.tar.gz
 
+    - name: Create symlinks
+      ansible.builting.sh: |
+        ln -s ~/personal/setup/dotfiles/.tmux.conf ~/.tmux.conf
+        ln -s ~/personal/setup/dotfiles/.zshrc ~/.zshrc
+        ln -s ~/personal/setup/dotfiles/.tmux-cht-command ~/.tmux-cht-command
+        ln -s ~/personal/setup/dotfiles/.tmux-cht-languages ~/.tmux-cht-languages
+        ln -s ~/personal/setup/scripts/tmux-sessionizer.sh ~/.local/bin/tmux-sessionizer
+
