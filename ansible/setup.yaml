@@ -95,4 +95,5 @@
         ln -s ~/personal/setup/dotfiles/.tmux-cht-command ~/.tmux-cht-command
         ln -s ~/personal/setup/dotfiles/.tmux-cht-languages ~/.tmux-cht-languages
         ln -s ~/personal/setup/scripts/tmux-sessionizer.sh ~/.local/bin/tmux-sessionizer
+        ln -s ~/personal/setup/scripts/easycd.sh ~/.local/bin/easycd
 
