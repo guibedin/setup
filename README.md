@@ -3,6 +3,8 @@ Setup a new PC
 
 ## Initial Setup
 ```sh
+sudo apt-get update
+
 # Install Git
 sudo apt-get install -y git curl
 git config --global user.email "guilherme0bedin@gmail.com"
