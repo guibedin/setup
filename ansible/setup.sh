@@ -4,7 +4,11 @@
 sudo apt-get install wget zsh ca-certificates curl gnupg terminator neovim \
   nfs-kernel-server qemu-kvm libvirt-daemon-system build-essential \
   libxslt-dev libxml2-dev libvirt-dev zlib1g-dev ruby-dev virt-manager \
-  apt-transport-https tmux
+  apt-transport-https tmux fzf
+
+# Create some dirs
+mkdir ~/.local/bin
+mkdir ~/.config/terminator
 
 # Change shell to zsh
 chsh -s $(which zsh)

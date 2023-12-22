@@ -1,5 +1,5 @@
 # If you come from bash you might have to change your $PATH.
-export PATH=$HOME/bin:/usr/local/bin:/usr/local/go/bin:$HOME/go/bin:/home/guilhermes/.local/bin:$PATH
+export PATH=$HOME/bin:/usr/local/bin:/usr/local/go/bin:/usr/local/nvim/bin:$HOME/go/bin:/home/bedin/.local/bin:$PATH
 export GOPATH=$HOME/go
 
 # Path to your oh-my-zsh installation.
@@ -105,5 +105,6 @@ alias k=kubectl
 alias kctx=kubectx
 alias kns=kubens
 alias cht=~/personal/chtsh.sh
+alias twork="tmux new-session -t work"
 source <(kubectl completion zsh)
 
