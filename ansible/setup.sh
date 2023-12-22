@@ -4,7 +4,7 @@
 sudo apt-get install wget zsh ca-certificates curl gnupg terminator neovim \
   nfs-kernel-server qemu-kvm libvirt-daemon-system build-essential \
   libxslt-dev libxml2-dev libvirt-dev zlib1g-dev ruby-dev virt-manager \
-  apt-transport-https tmux fzf
+  apt-transport-https tmux fzf htop
 
 # Create some dirs
 mkdir ~/.local/bin
@@ -63,3 +63,6 @@ ln -s ~/personal/setup/dotfiles/.tmux-cht-command ~/.tmux-cht-command
 ln -s ~/personal/setup/dotfiles/.tmux-cht-languages ~/.tmux-cht-languages
 ln -s ~/personal/setup/scripts/tmux-sessionizer.sh ~/.local/bin/tmux-sessionizer
 ln -s ~/personal/setup/scripts/easycd.sh ~/.local/bin/easycd
+
+# Vagrant plugins
+vagrant plugin install vagrant-libvirt
