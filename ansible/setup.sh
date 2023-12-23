@@ -9,6 +9,7 @@ sudo apt-get install wget zsh ca-certificates curl gnupg terminator neovim \
 # Create some dirs
 mkdir ~/.local/bin
 mkdir ~/.config/terminator
+mkdir ~/.config/i3
 
 # Change shell to zsh
 chsh -s $(which zsh)
@@ -63,6 +64,8 @@ ln -s ~/personal/setup/dotfiles/.tmux-cht-command ~/.tmux-cht-command
 ln -s ~/personal/setup/dotfiles/.tmux-cht-languages ~/.tmux-cht-languages
 ln -s ~/personal/setup/scripts/tmux-sessionizer.sh ~/.local/bin/tmux-sessionizer
 ln -s ~/personal/setup/scripts/easycd.sh ~/.local/bin/easycd
+ln -s ~/personal/setup/config/i3/config ~/.config/i3/config
+ln -s ~/personal/setup/config/i3/i3status.conf ~/.config/i3/i3status.conf
 
 # Vagrant plugins
 vagrant plugin install vagrant-libvirt
