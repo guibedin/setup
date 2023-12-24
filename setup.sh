@@ -1,21 +1,17 @@
 #!/bin/bash
 
 # Install first packages
-sudo apt-get install wget zsh ca-certificates curl gnupg terminator neovim \
+sudo apt-get install ca-certificates gnupg neovim \
   nfs-kernel-server qemu-kvm libvirt-daemon-system build-essential \
   libxslt-dev libxml2-dev libvirt-dev zlib1g-dev ruby-dev virt-manager \
-  apt-transport-https tmux fzf htop rofi feh brightnessctl
+  apt-transport-https tmux fzf htop rofi feh brightnessctl i3
+
+curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
 
 # Create some dirs
 mkdir ~/.local/bin
-mkdir ~/.config/terminator
 mkdir ~/.config/i3
-
-# Change shell to zsh
-chsh -s $(which zsh)
-
-# Install oh my zsh
-sh -c "$(wget -O- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+mkdir ~/.config/kitty
 
 # Get docker keyring
 install -m 0755 -d /etc/apt/keyrings
@@ -52,21 +48,36 @@ sudo systemctl enable nfs-kernel-server.service
 # Setup neovim
 git clone git@github.com:guibedin/nvim.git ~/.config/nvim
 
-# Install Go
-curl "https://go.dev/dl/go1.21.4.src.tar.gz"
-sudo tar -C /usr/local -xzf go1.21.4.linux-amd64.tar.gz
-rm go1.21.4.linux-amd64.tar.gz
-
 # Create links
+# Remove files if they exist
+rm ~/.tmux.conf ~/.zshrc ~/.tmux-cht-command ~/.tmux-cht-languages \
+  ~/.local/bin/tmux-sessionizer ~/.local/bin/easycd \
+  ~/.config/i3/config ~/.config/i3/i3status.conf ~/.config/kitty/kitty.conf \
+  /usr/bin/kitten /usr/bin/kitty ~/.local/share/fonts/JetBrainsMonoNerdFont-Bold.ttf
+
+# Dot files
 ln -s ~/personal/setup/dotfiles/.tmux.conf ~/.tmux.conf
 ln -s ~/personal/setup/dotfiles/.zshrc ~/.zshrc
 ln -s ~/personal/setup/dotfiles/.tmux-cht-command ~/.tmux-cht-command
 ln -s ~/personal/setup/dotfiles/.tmux-cht-languages ~/.tmux-cht-languages
+
+# Scripts
 ln -s ~/personal/setup/scripts/tmux-sessionizer.sh ~/.local/bin/tmux-sessionizer
 ln -s ~/personal/setup/scripts/easycd.sh ~/.local/bin/easycd
+
+# Confs
 ln -s ~/personal/setup/config/i3/config ~/.config/i3/config
 ln -s ~/personal/setup/config/i3/i3status.conf ~/.config/i3/i3status.conf
+ln -s ~/personal/setup/config/kitty/kitty.conf ~/.config/kitty/kitty.conf
 
+# Bins
+sudo ln -s ~/.local/kitty.app/bin/kitten /usr/bin/kitten
+sudo ln -s ~/.local/kitty.app/bin/kitty /usr/bin/kitty
+
+# Fonts
+ln -s ~/personal/setup/fonts/JetBrainsMonoNerdFont-Bold.ttf ~/.local/share/fonts/JetBrainsMonoNerdFont-Bold.ttf
+
+# i3 brightness control
 usermod -aG video bedin
 
 # Vagrant plugins
