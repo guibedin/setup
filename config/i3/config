@@ -13,7 +13,7 @@ set $mod Mod4
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-font pango:JetBrainsMono Nerd Font Bold 9
+font pango:JetBrainsMono Nerd Font Bold 10
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
@@ -192,6 +192,9 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
+# Title alignment
+title_align center
+
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
@@ -223,5 +226,5 @@ client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
 client.background       #ffffff
 
 # Startup programs
-exec --no-startup-id feh --bg-scale --zoom fill '/usr/share/backgrounds/Wallpaper_minotaur_dimmed_3840x2160.png'
+exec --no-startup-id feh --bg-center '~/personal/setup/wallpapers/triforce.jpg'
 exec --no-startup-id i3-msg 'workspace $ws2; exec kitty tmux new-session -t work; workspace $ws1; exec microsoft-edge'
