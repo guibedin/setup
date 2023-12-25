@@ -4,7 +4,7 @@
 sudo apt-get install ca-certificates gnupg neovim \
   nfs-kernel-server qemu-kvm libvirt-daemon-system build-essential \
   libxslt-dev libxml2-dev libvirt-dev zlib1g-dev ruby-dev virt-manager \
-  apt-transport-https tmux fzf htop rofi feh brightnessctl i3
+  apt-transport-https tmux fzf htop rofi feh brightnessctl i3 ripgrep
 
 curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
 
