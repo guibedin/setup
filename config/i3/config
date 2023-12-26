@@ -227,4 +227,4 @@ client.background       #ffffff
 
 # Startup programs
 exec --no-startup-id feh --bg-center '~/personal/setup/wallpapers/triforce.jpg'
-exec --no-startup-id i3-msg 'workspace $ws2; exec kitty tmux new-session -t work; workspace $ws1; exec microsoft-edge'
+exec --no-startup-id i3-msg 'workspace $ws2; exec kitty tmux new-session -t work; workspace $ws1; exec google-chrome'
