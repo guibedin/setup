@@ -123,7 +123,7 @@ bindsym $mod+a focus parent
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
-set $ws1 "1:Browser"
+set $ws1 "1:Main"
 set $ws2 "2:Tmux"
 set $ws3 "3"
 set $ws4 "4"
@@ -225,6 +225,12 @@ client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
 
 client.background       #ffffff
 
-# Startup programs
+# Background
 exec --no-startup-id feh --bg-center '~/personal/setup/wallpapers/triforce.jpg'
-exec --no-startup-id i3-msg 'workspace $ws2; exec kitty tmux new-session -t work; workspace $ws1; exec google-chrome'
+
+# Startup
+# Personal
+# exec --no-startup-id i3-msg 'workspace $ws2; exec kitty tmux new-session -t work; workspace $ws1; exec google-chrome'
+
+# Work
+exec --no-startup-id i3-msg 'workspace $ws4; exec google-chrome; workspace $ws2; exec kitty tmux new-session -t work; workspace $ws1; exec microsoft-edge'
