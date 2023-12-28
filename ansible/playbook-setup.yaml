@@ -1,17 +1,13 @@
 - hosts: localhost
-  become: yes
   vars:
-    - user: 'guilhermeb'
+    user: bedin
   tasks:
     - name: Install base packages
+      become: true
       ansible.builtin.apt:
         pkg:
-          - wget
-          - zsh
           - ca-certificates 
-          - curl 
           - gnupg
-          - terminator
           - neovim
           - nfs-kernel-server
           - qemu-kvm 
@@ -25,16 +21,38 @@
           - virt-manager
           - apt-transport-https
           - tmux
+          - fzf
+          - htop
+          - rofi
+          - feh
+          - brightnessctl
+          - i3
+          - ripgrep
 
-    - name: Change shell to zsh
-      ansible.builtin.shell: |
-        chsh -s $(which zsh)
+    - name: Setup Neovim
+      ansible.builtin.git:
+        repo: git@github.com:guibedin/nvim.git
+        dest: ~/.config/nvim
+        key_file: ~/.ssh/id_rsa
 
-    - name: Install oh my zsh
+    - name: Create Dirs
       ansible.builtin.shell: |
-        sh -c "$(wget -O- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+        mkdir ~/.local/bin
+        mkdir ~/.config/i3
+        mkdir ~/.config/kitty
+
+    - name: Install Kitty
+      ansible.builtin.shell: |
+        curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
+
+    - name: Kitty Links
+      become: yes
+      ansible.builtin.shell: |
+        ln -s ~/.local/kitty.app/bin/kitten /usr/bin/kitten
+        ln -s ~/.local/kitty.app/bin/kitty /usr/bin/kitty
 
     - name: Setup Necessary Repos
+      become: true
       ansible.builtin.shell: |
         install -m 0755 -d /etc/apt/keyrings
         curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
@@ -45,18 +63,11 @@
           "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
           $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
            tee /etc/apt/sources.list.d/docker.list > /dev/null
-        
-        # Vagrant repository
-        wget -O- https://apt.releases.hashicorp.com/gpg | gpg --dearmor |  tee /usr/share/keyrings/hashicorp-archive-keyring.gpg
-        echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" |  tee /etc/apt/sources.list.d/hashicorp.list
-
-        # Kubectl repository
-        curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.28/deb/Release.key | gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
-        echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.28/deb/ /' | tee /etc/apt/sources.list.d/kubernetes.list
-
+ 
         apt-get update
     
-    - name: Install Docker, Vagrant, Kubecetl and Containerd
+    - name: Install Docker and Containerd
+      become: true
       ansible.builtin.apt:
         pkg:
           - docker-ce 
@@ -64,36 +75,35 @@
           - containerd.io 
           - docker-buildx-plugin 
           - docker-compose-plugin
-          - vagrant
-          - kubectl
 
     - name: Setup docker, libvirt and nfs-kernel-server
+      become: true
       ansible.builtin.shell: |
         groupadd docker
-        usermod -aG docker guilhermeb
+        usermod -aG docker {{ user }}
         systemctl enable docker.service
         systemctl enable containerd.service
         systemctl enable nfs-kernel-server.service
 
-    - name: Setup Neovim
-      become: false
-      ansible.builtin.git:
-        repo: git@github.com:guibedin/nvim.git
-        dest: ~/.config/nvim
-        key_file: ~/.ssh/id_rsa
-
-    - name: Install Go
-      ansible.builting.sh: |
-        curl "https://go.dev/dl/go1.21.4.src.tar.gz"
-        tar -C /usr/local -xzf go1.21.4.linux-amd64.tar.gz
-        rm go1.21.4.linux-amd64.tar.gz
-
     - name: Create symlinks
-      ansible.builting.sh: |
+      ansible.builtin.shell: |
+        # Dot files
         ln -s ~/personal/setup/dotfiles/.tmux.conf ~/.tmux.conf
         ln -s ~/personal/setup/dotfiles/.zshrc ~/.zshrc
         ln -s ~/personal/setup/dotfiles/.tmux-cht-command ~/.tmux-cht-command
         ln -s ~/personal/setup/dotfiles/.tmux-cht-languages ~/.tmux-cht-languages
+        
+        # Scripts
         ln -s ~/personal/setup/scripts/tmux-sessionizer.sh ~/.local/bin/tmux-sessionizer
         ln -s ~/personal/setup/scripts/easycd.sh ~/.local/bin/easycd
+        
+        # Confs
+        ln -s ~/personal/setup/config/i3/config ~/.config/i3/config
+        ln -s ~/personal/setup/config/i3/i3status.conf ~/.config/i3/i3status.conf
+        ln -s ~/personal/setup/config/kitty/kitty.conf ~/.config/kitty/kitty.conf
+        
+        # Fonts
+        ln -s ~/personal/setup/fonts/JetBrainsMonoNerdFont-Bold.ttf ~/.local/share/fonts/JetBrainsMonoNerdFont-Bold.ttf
 
+        # i3 brightness control
+        usermod -aG video {{ user }}
