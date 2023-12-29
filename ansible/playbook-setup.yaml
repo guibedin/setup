@@ -37,8 +37,8 @@
 
     - name: Setup Neovim
       ansible.builtin.shell: |
-        git clone --depth 1 https://github.com/wbthomason/packer.nvim ~/.local/share/nvim/site/pack/packer/start/packer.nvim
-        nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
+        rm ~/.local/share/nvim ~/.local/state/nvim ~/.cache/nvim
+        nvim --headless "+Lazy! sync" +qa
 
     - name: Create Dirs
       ansible.builtin.shell: |
@@ -58,7 +58,7 @@
         ln -s ~/.local/kitty.app/bin/kitten /usr/bin/kitten
         ln -s ~/.local/kitty.app/bin/kitty /usr/bin/kitty
 
-    - name: Setup Necessary Repos
+    - name: Setup Docker Repo
       become: true
       ansible.builtin.shell: |
         install -m 0755 -d /etc/apt/keyrings
