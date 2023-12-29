@@ -29,11 +29,16 @@
           - i3
           - ripgrep
 
-    - name: Setup Neovim
+    - name: Clone Neovim Repo
       ansible.builtin.git:
-        repo: git@github.com:guibedin/nvim.git
+        repo: git@github.com:guibedin/kickstart.nvim.git
         dest: ~/.config/nvim
         key_file: ~/.ssh/id_rsa
+
+    - name: Setup Neovim
+      ansible.builtin.shell: |
+        git clone --depth 1 https://github.com/wbthomason/packer.nvim ~/.local/share/nvim/site/pack/packer/start/packer.nvim
+        nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
 
     - name: Create Dirs
       ansible.builtin.shell: |
@@ -45,9 +50,11 @@
       ansible.builtin.shell: |
         curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
 
-    - name: Kitty Links
+    - name: Setup Kitty
       become: yes
       ansible.builtin.shell: |
+        update-alternatives --install /usr/bin/x-terminal-emulator x-terminal-emulator /home/guilhermes/.local/kitty.app/bin/kitty 50
+        update-alternatives --set x-terminal-emulator /home/guilhermes/.local/kitty.app/bin/kitty
         ln -s ~/.local/kitty.app/bin/kitten /usr/bin/kitten
         ln -s ~/.local/kitty.app/bin/kitty /usr/bin/kitty
 
@@ -92,16 +99,17 @@
         ln -s ~/personal/setup/dotfiles/.zshrc ~/.zshrc
         ln -s ~/personal/setup/dotfiles/.tmux-cht-command ~/.tmux-cht-command
         ln -s ~/personal/setup/dotfiles/.tmux-cht-languages ~/.tmux-cht-languages
-        
+        ln -s ~/personal/setup/dotfiles/.work_aliases ~/.work_aliases
+
         # Scripts
         ln -s ~/personal/setup/scripts/tmux-sessionizer.sh ~/.local/bin/tmux-sessionizer
         ln -s ~/personal/setup/scripts/easycd.sh ~/.local/bin/easycd
-        
+
         # Confs
         ln -s ~/personal/setup/config/i3/config ~/.config/i3/config
         ln -s ~/personal/setup/config/i3/i3status.conf ~/.config/i3/i3status.conf
         ln -s ~/personal/setup/config/kitty/kitty.conf ~/.config/kitty/kitty.conf
-        
+
         # Fonts
         ln -s ~/personal/setup/fonts/JetBrainsMonoNerdFont-Bold.ttf ~/.local/share/fonts/JetBrainsMonoNerdFont-Bold.ttf
 

@@ -16,9 +16,7 @@ source .venv/bin/activate
 pip install ansible ansible-vault
 
 # Setup ssh keys
-curl "" -o ~/.ssh/id_rsa
-curl "" -o ~/.ssh/id_rsa.pub
-curl "" -o ~/.ssh/known_hosts
+sh create_keys.sh
 
 # Decrypt
 ansible-vault decrypt ~/.ssh/id_rsa

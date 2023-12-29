@@ -21,9 +21,11 @@
           - kubectl
 
     - name: Install Go
-      ansible.builtin.sh: |
+      ansible.builtin.shell: |
         curl "https://go.dev/dl/go1.21.4.src.tar.gz"
         tar -C /usr/local -xzf go1.21.4.linux-amd64.tar.gz
         rm go1.21.4.linux-amd64.tar.gz
 
-
+    - name: Vagrant Plugins
+      ansible.builtin.shell: |
+        vagrant plugin install vagrant-libvirt
