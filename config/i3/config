@@ -36,19 +36,14 @@ exec --no-startup-id nm-applet
 
 # Use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
-# bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
-# bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
-# bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
+bindsym XF86AudioRaiseVolume exec --no-startup-id "pactl set-sink-volume @DEFAULT_SINK@ +5% && $refresh_i3status; notify-send --expire-time=2000 'Volume Up'"
+bindsym XF86AudioLowerVolume exec --no-startup-id "pactl set-sink-volume @DEFAULT_SINK@ -5% && $refresh_i3status; notify-send --expire-time=2000 'Volume Down'"
+bindsym XF86AudioMute exec --no-startup-id "pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status; notify-send --expire-time=2000 'Audio Muted'"
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 
 # Screen brightness controls
 bindsym XF86MonBrightnessUp exec "brightnessctl s +5%; notify-send --expire-time=2000 'Brightness Up'"
 bindsym XF86MonBrightnessDown exec "brightnessctl s 5%-; notify-send --expire-time=2000 'Brightness Down'"
-
-# Media volume controls
-bindsym XF86AudioMute exec "amixer sset 'Master' toggle; notify-send --expire-time=2000 'Audio Muted'"
-bindsym XF86AudioLowerVolume exec "amixer sset 'Master' 5%-; notify-send --expire-time=2000 'Volume Down'"
-bindsym XF86AudioRaiseVolume exec "amixer sset 'Master' 5%+; notify-send --expire-time=2000 'Volume Up'"
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -113,7 +108,7 @@ bindsym $mod+e layout toggle split
 bindsym $mod+Shift+space floating toggle
 
 # change focus between tiling / floating windows
-bindsym $mod+space focus mode_toggle
+# bindsym $mod+space focus mode_toggle
 
 # focus the parent container
 bindsym $mod+a focus parent
@@ -125,8 +120,8 @@ bindsym $mod+a focus parent
 # We use variables to avoid repeating the names in multiple places.
 set $ws1 "1:Main"
 set $ws2 "2:Tmux"
-set $ws3 "3"
-set $ws4 "4"
+set $ws3 "3:Slack"
+set $ws4 "4:Chrome"
 set $ws5 "5"
 set $ws6 "6"
 set $ws7 "7"
@@ -233,4 +228,9 @@ exec --no-startup-id feh --bg-center '~/personal/setup/wallpapers/triforce.jpg'
 # exec --no-startup-id i3-msg 'workspace $ws2; exec kitty tmux new-session -t work; workspace $ws1; exec google-chrome'
 
 # Work
-exec --no-startup-id i3-msg 'workspace $ws4; exec google-chrome; workspace $ws2; exec kitty tmux new-session -t work; workspace $ws1; exec microsoft-edge'
+exec --no-startup-id i3-msg 'workspace $ws4; exec google-chrome'
+exec --no-startup-id i3-msg 'workspace $ws2; exec kitty tmux new-session -t work'
+exec --no-startup-id i3-msg 'workspace $ws1; exec microsoft-edge'
+
+# Custom Binds
+bindsym Control+$mod+l exec i3lock --color 6272a4
