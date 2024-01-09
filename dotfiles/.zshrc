@@ -11,7 +11,6 @@ export ZSH="$HOME/.oh-my-zsh"
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 #ZSH_THEME="robbyrussell"
 ZSH_THEME="half-life"
-
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
 # a theme from this variable instead of looking in $ZSH/themes/
@@ -122,3 +121,10 @@ else
     eval `ssh-agent | tee ~/.ssh/agent.env`
     ssh-add ~/.ssh/id_rsa
 fi
+
+# Prompt new line
+function prompt_end() {
+  echo -n "\n➜ %{%f%}"
+}
+PROMPT=$PROMPT"$(prompt_end)"
+

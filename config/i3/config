@@ -120,8 +120,8 @@ bindsym $mod+a focus parent
 # We use variables to avoid repeating the names in multiple places.
 set $ws1 "1:Main"
 set $ws2 "2:Tmux"
-set $ws3 "3:Slack"
-set $ws4 "4:Chrome"
+set $ws3 "3:Chrome"
+set $ws4 "4:Slack"
 set $ws5 "5"
 set $ws6 "6"
 set $ws7 "7"
@@ -234,3 +234,6 @@ exec --no-startup-id i3-msg 'workspace $ws1; exec microsoft-edge'
 
 # Custom Binds
 bindsym Control+$mod+l exec i3lock --color 6272a4
+
+# Start with passwords
+exec --no-startup-id /usr/bin/gnome-keyring-daemon --start --components=secrets
