@@ -35,6 +35,8 @@
         dest: ~/.config/nvim
         key_file: ~/.ssh/id_rsa
 
+    # Go, Node and NPM are required to install all packages from nvim
+    # There are more fixes to this part 
     - name: Setup Neovim
       ansible.builtin.shell: |
         rm ~/.local/share/nvim ~/.local/state/nvim ~/.cache/nvim
