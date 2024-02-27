@@ -8,7 +8,6 @@
         pkg:
           - ca-certificates 
           - gnupg
-          - neovim
           - nfs-kernel-server
           - qemu-kvm 
           - libvirt-daemon-system 
@@ -29,6 +28,12 @@
           - i3
           - ripgrep
 
+    - name: Install Neovim
+      become: true
+      ansible.builtin.shell: |
+        curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz
+        tar -C /opt -xzf nvim-linux64.tar.gz
+
     - name: Clone Neovim Repo
       ansible.builtin.git:
         repo: git@github.com:guibedin/kickstart.nvim.git
@@ -47,13 +52,14 @@
         mkdir ~/.local/bin
         mkdir ~/.config/i3
         mkdir ~/.config/kitty
+        mkdir ~/.local/share/fonts
 
     - name: Install Kitty
       ansible.builtin.shell: |
         curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
 
     - name: Setup Kitty
-      become: yes
+      become: true
       ansible.builtin.shell: |
         update-alternatives --install /usr/bin/x-terminal-emulator x-terminal-emulator /home/guilhermes/.local/kitty.app/bin/kitty 50
         update-alternatives --set x-terminal-emulator /home/guilhermes/.local/kitty.app/bin/kitty
@@ -96,6 +102,8 @@
 
     - name: Create symlinks
       ansible.builtin.shell: |
+        rm ~/.zshrc ~/.tmux.conf
+
         # Dot files
         ln -s ~/personal/setup/dotfiles/.tmux.conf ~/.tmux.conf
         ln -s ~/personal/setup/dotfiles/.zshrc ~/.zshrc
@@ -117,3 +125,4 @@
 
         # i3 brightness control
         usermod -aG video {{ user }}
+
