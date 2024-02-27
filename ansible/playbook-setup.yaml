@@ -85,10 +85,10 @@
 
     - name: Create Dirs
       ansible.builtin.shell: |
-        mkdir ~/.local/bin
-        mkdir ~/.local/share/fonts
-        mkdir ~/.config/i3
-        mkdir ~/.config/kitty
+        mkdir -p ~/.local/bin
+        mkdir -p ~/.local/share/fonts
+        mkdir -p ~/.config/i3
+        mkdir -p ~/.config/kitty
 
     - name: Install Kitty
       ansible.builtin.shell: |
@@ -176,9 +176,3 @@
     - name: Get tpm for tmux
       ansible.builtin.shell: |
         git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-
-    - name: Setup Neovim
-      ansible.builtin.shell: |
-        source ~/.zshrc
-        nvim --headless "+Lazy! sync" +qa
-
