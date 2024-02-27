@@ -85,18 +85,6 @@
         mkdir ~/.config/i3
         mkdir ~/.config/kitty
 
-    - name: Install Kitty
-      ansible.builtin.shell: |
-        curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
-
-    - name: Setup Kitty
-      become: true
-      ansible.builtin.shell: |
-        update-alternatives --install /usr/bin/x-terminal-emulator x-terminal-emulator /home/guilhermes/.local/kitty.app/bin/kitty 50
-        update-alternatives --set x-terminal-emulator /home/guilhermes/.local/kitty.app/bin/kitty
-        ln -s ~/.local/kitty.app/bin/kitten /usr/bin/kitten
-        ln -s ~/.local/kitty.app/bin/kitty /usr/bin/kitty
-
     - name: Setup Docker Repo
       become: true
       ansible.builtin.shell: |
