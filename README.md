@@ -10,6 +10,12 @@ sudo apt-get install -y git curl wget zsh
 git config --global user.email "guilherme0bedin@gmail.com"
 git config --global user.name "Guilherme Bedin"
 
+# Change shell to zsh
+chsh -s $(which zsh)
+
+# Install oh my zsh
+sh -c "$(wget -O- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
 # Instal ansible
 python3 -m venv .venv
 source .venv/bin/activate
@@ -28,13 +34,4 @@ ssh-add ~/.ssh/id_rsa
 
 mkdir personal
 git clone git@github.com:guibedin/setup.git personal/setup
-
-# Change shell to zsh
-chsh -s $(which zsh)
-
-# Install oh my zsh
-sh -c "$(wget -O- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-
-# Download tpm for tmux
-git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 ```

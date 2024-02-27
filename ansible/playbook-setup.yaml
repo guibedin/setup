@@ -28,11 +28,54 @@
           - i3
           - ripgrep
 
+    - name: Install Vagrant
+      become: true
+      ansible.builtin.shell: |
+        # Vagrant repository
+        wget -O- https://apt.releases.hashicorp.com/gpg | gpg --dearmor |  tee /usr/share/keyrings/hashicorp-archive-keyring.gpg
+        echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" |  tee /etc/apt/sources.list.d/hashicorp.list
+
+        apt-get update
+        apt-get install -y vagrant
+        vagrant plugin install vagrant-libvirt
+
+    - name: Install Node
+      become: true
+      ansible.builtin.shell: |
+        curl -fsSL https://deb.nodesource.com/setup_21.x | sudo -E bash - && apt-get install -y nodejs
+
+    - name: Install Go
+      become: true
+      ansible.builtin.shell: |
+        wget https://go.dev/dl/go1.22.0.linux-amd64.tar.gz
+        tar -C /usr/local -xzf go1.22.0.linux-amd64.tar.gz
+        rm go1.22.0.linux-amd64.tar.gz
+
+    - name: Install Kubernetes
+      become: true
+      ansible.builtin.shell: |
+        curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+        install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+        rm kubectl
+        
+    - name: Install kubectx and kubens
+      become: true
+      ansible.builtin.shell: |
+        git clone https://github.com/ahmetb/kubectx /opt/kubectx
+        ln -s /opt/kubectx/kubectx /usr/local/bin/kubectx
+        ln -s /opt/kubectx/kubens /usr/local/bin/kubens
+
+    - name: Install Kind and Helm
+      ansible.builtin.shell: |
+        go install sigs.k8s.io/kind@v0.22.0
+        curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+
     - name: Install Neovim
       become: true
       ansible.builtin.shell: |
         curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz
         tar -C /opt -xzf nvim-linux64.tar.gz
+        rm nvim-linux64.tar.gz
 
     - name: Clone Neovim Repo
       ansible.builtin.git:
@@ -40,19 +83,12 @@
         dest: ~/.config/nvim
         key_file: ~/.ssh/id_rsa
 
-    # Go, Node and NPM are required to install all packages from nvim
-    # There are more fixes to this part 
-    - name: Setup Neovim
-      ansible.builtin.shell: |
-        rm ~/.local/share/nvim ~/.local/state/nvim ~/.cache/nvim
-        nvim --headless "+Lazy! sync" +qa
-
     - name: Create Dirs
       ansible.builtin.shell: |
         mkdir ~/.local/bin
+        mkdir ~/.local/share/fonts
         mkdir ~/.config/i3
         mkdir ~/.config/kitty
-        mkdir ~/.local/share/fonts
 
     - name: Install Kitty
       ansible.builtin.shell: |
@@ -77,8 +113,7 @@
         echo \
           "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
           $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
-           tee /etc/apt/sources.list.d/docker.list > /dev/null
- 
+           tee /etc/apt/sources.list.d/docker.list > /dev/null 
         apt-get update
     
     - name: Install Docker and Containerd
@@ -102,7 +137,17 @@
 
     - name: Create symlinks
       ansible.builtin.shell: |
-        rm ~/.zshrc ~/.tmux.conf
+        if [ -f ~/.zshrc ]; then
+          rm ~/.zshrc
+        fi
+
+        if [ -f ~/.tmux.conf ]; then
+          rm ~/.tmux.conf
+        fi
+
+        if [ -f ~/.config/kitty/kitty.conf ]; then
+          rm ~/.config/kitty/kitty.conf
+        fi
 
         # Dot files
         ln -s ~/personal/setup/dotfiles/.tmux.conf ~/.tmux.conf
@@ -125,4 +170,12 @@
 
         # i3 brightness control
         usermod -aG video {{ user }}
+
+    - name: Get tpm for tmux
+      ansible.builtin.shell: |
+        git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+
+    - name: Setup Neovim
+      ansible.builtin.shell: |
+        nvim --headless "+Lazy! sync" +qa
 
