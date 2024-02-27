@@ -24,8 +24,6 @@
           - htop
           - rofi
           - feh
-          - brightnessctl
-          - i3
           - ripgrep
 
     - name: Install Vagrant
@@ -51,16 +49,13 @@
         tar -C /usr/local -xzf go1.22.0.linux-amd64.tar.gz
         rm go1.22.0.linux-amd64.tar.gz
 
-    - name: Install Kubernetes
+    - name: Install kubectl and tools
       become: true
       ansible.builtin.shell: |
         curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
         install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
         rm kubectl
         
-    - name: Install kubectx and kubens
-      become: true
-      ansible.builtin.shell: |
         git clone https://github.com/ahmetb/kubectx /opt/kubectx
         ln -s /opt/kubectx/kubectx /usr/local/bin/kubectx
         ln -s /opt/kubectx/kubens /usr/local/bin/kubens
@@ -167,11 +162,6 @@
 
         # Fonts
         ln -s ~/personal/setup/fonts/JetBrainsMonoNerdFont-Bold.ttf ~/.local/share/fonts/JetBrainsMonoNerdFont-Bold.ttf
-
-    - name: Setup i3 brightness control
-      ansible.builtin.shell: |
-        # i3 brightness control
-        usermod -aG video {{ user }}
 
     - name: Get tpm for tmux
       ansible.builtin.shell: |
