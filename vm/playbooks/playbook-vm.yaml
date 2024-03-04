@@ -27,6 +27,7 @@
           - htop
           - rofi
           - ripgrep
+          - unzip
 
     - name: Create SSH Keys
       block:
