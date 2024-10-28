@@ -41,7 +41,7 @@
       "KC_K",
       "KC_NO",
       "KC_NO",
-      "MT(MOD_LGUI,KC_DEL)",
+      "KC_DEL",
       "LT(2,KC_BSPC)",
       "LT(4,KC_ENT)"
     ],
@@ -95,7 +95,7 @@
       "S(KC_4)",
       "KC_LGUI",
       "KC_LALT",
-      "KC_LSFT",
+      "KC_CAPS",
       "KC_LCTL",
       "KC_NO",
       "KC_BSLS",
